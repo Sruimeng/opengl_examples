@@ -79,6 +79,7 @@ int main()
 		return -1;
 	}
 	
+
 	////三角形顶点数组
 	//float vertices[] = {
 	//	-0.5f, -0.5f, 0.0f,
@@ -148,7 +149,10 @@ int main()
 
 	//设置顶点属性的指针
 	
-	
+	Shader fsShader("shader.fs");
+	Shader vsShader("shader.vs");
+	ShaderProgram shaderProgram(vsShader.code, fsShader.code);
+	shaderProgram.use();
 	//int vertexColorLocation;
 	////着色器相关
 	//{
