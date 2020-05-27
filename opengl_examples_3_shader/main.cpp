@@ -22,47 +22,29 @@ namespace {
 		if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 			glfwSetWindowShouldClose(window, true);
 	}
+
+	void openglInit(int major, int minor) {
+		//glfw初始化
+		glfwInit();
+		//下面两句是设置版本，GLFW_CONTEXT_VERSION_MAJOR->主版本 GLFW_CONTEXT_VERSION_MINOR->小版本
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, major);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, minor);
+		//设置使用核心模式
+		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+#ifdef __APPLE__
+		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+#endif
+	}
 }
 
 
 int main()
 {
-	const char *vertexShaderSource = "#version 330 core\n"
-		"layout (location = 0) in vec3 aPos;\n"
-		"layout (location = 1) in vec3 aColor;\n"
-		"out vec3 outColor;\n"
-		"void main()\n"
-		"{\n"
-		"   gl_Position = vec4(aPos.x, aPos.y, 0.0, 1.0);\n"
-		"	outColor = aColor;\n"
-		"}\n\0";
-	const char *fragmentShaderSource =
-		"#version 330 core\n"
-		"in vec3 outColor;\n"
-		"out vec4 FragColor;\n"
-		"void main()\n"
-		"{\n"
-		"	FragColor = vec4(outColor,1.0);\n"
-		"}\n"
-		;
-	/*//简单得uniform来改变颜色
-	const char *fragmentShaderSource = "#version 330 core\n"
-		"out vec4 FragColor;\n"
-		"uniform vec4 ourColor; \n"
-		"void main()\n"
-		"{\n"
-		"   FragColor = ourColor;\n"
-		"}\n\0";*/
-	//glfw初始化
-	glfwInit();
-	//下面两句是设置版本，GLFW_CONTEXT_VERSION_MAJOR->主版本 GLFW_CONTEXT_VERSION_MINOR->小版本
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	//设置使用核心模式
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	openglInit(4, 3);
+	
 	//glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 	//创建窗口
-	GLFWwindow* window = glfwCreateWindow(800, 600, "LearnOpenGL", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(1024, 1024, "learn opengl", NULL, NULL);
 	//设置当前窗口的上下文
 	glfwMakeContextCurrent(window);
 	//glad初始化
@@ -78,8 +60,8 @@ int main()
 		glfwTerminate();
 		return -1;
 	}
-	
-
+	//设置视点
+	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 	////三角形顶点数组
 	//float vertices[] = {
 	//	-0.5f, -0.5f, 0.0f,
@@ -153,59 +135,8 @@ int main()
 	Shader vsShader("shader.vs");
 	ShaderProgram shaderProgram(vsShader.code, fsShader.code);
 	shaderProgram.use();
-	//int vertexColorLocation;
-	////着色器相关
-	//{
-	//	//创建vs
-	//	unsigned int vertexShader;
-	//	vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	//	//绑定vs
-	//	glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-	//	//编译vs
-	//	glCompileShader(vertexShader);
-	//	//设置返回数据
-	//	int  success;
-	//	char infoLog[512];
-	//	//获得编译状态
-	//	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-	//	if (!success)
-	//	{
-	//		glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-	//		std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
-	//	}
-
-	//	unsigned int fragmentShader;
-	//	fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	//	glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-	//	glCompileShader(fragmentShader);
-	//	//获得编译状态
-	//	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
-	//	if (!success)
-	//	{
-	//		glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-	//		std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
-	//	}
-
-	//	//创建着色器程序
-	//	unsigned int shaderProgram;
-	//	shaderProgram = glCreateProgram();
-	//	//绑定着色器数据
-	//	glAttachShader(shaderProgram, vertexShader);
-	//	glAttachShader(shaderProgram, fragmentShader);
-	//	glLinkProgram(shaderProgram);
-	//	vertexColorLocation = glGetUniformLocation(shaderProgram, "ourColor");
-	//	//设置调用
-	//	glUseProgram(shaderProgram);
-	//	//删除着色器
-	//	glDeleteShader(vertexShader);
-	//	glDeleteShader(fragmentShader);
-	//	
-	//	glUseProgram(shaderProgram);
-	//}
 	
-	//设置视点
-	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-	std::cout << indicesLength << std::endl;
+	
 	//循环渲染
 	while (!glfwWindowShouldClose(window))
 	{
