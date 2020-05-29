@@ -62,7 +62,7 @@ int main()
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	//glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 	//创建窗口
-	GLFWwindow* window = glfwCreateWindow(800, 600, "LearnOpenGL", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(800, 600, "fbo", NULL, NULL);
 	//设置当前窗口的上下文
 	glfwMakeContextCurrent(window);
 	//glad初始化
