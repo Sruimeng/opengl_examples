@@ -117,8 +117,8 @@
     <ClInclude Include="Shader.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="5.1.framebuffers_screen.fs" />
-    <None Include="5.1.framebuffers_screen.vs" />
+    <None Include="screen.fs" />
+    <None Include="screen.vs" />
     <None Include="shader.fs" />
     <None Include="shader.vs" />
   </ItemGroup>

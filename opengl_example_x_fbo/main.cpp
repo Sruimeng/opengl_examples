@@ -84,14 +84,14 @@ int main()
 		0, 1, 2 // 第一个三角形
 	};
 	float vertices[] = {
-		0.5f, 0.5f, 0.0f,   // 右上角
-		-1.0f, 0.0f, 0.0f,  // 右下角
-		1.0f, 0.0f, 0.0f, // 左下角
+		0.0f, 0.7f, 0.0f,   // 右上角
+		-0.7f, -0.7f, 0.0f,  // 右下角
+		0.7f, -0.7f, 0.0f, // 左下角
 	};
 	float colors[] = {
 		1.0f, 0.0f, 0.0f,   // 右上角
-		0.0f, 1.0f, 0.0f,  // 右下角
-		0.0f, 0.0f, 1.0f,  // 左下角
+		0.0f,0.0f, 1.0f,  // 右下角
+		0.0f, 1.0f, 0.0f,  // 左下角
 	};
 
 	float quadVertices[] = { // vertex attributes for a quad that fills the entire screen in Normalized Device Coordinates.
@@ -158,8 +158,8 @@ int main()
 	ShaderProgram shaderProgram(vsShader.code, fsShader.code);
 	shaderProgram.use();
 
-	Shader ffsShader("5.1.framebuffers_screen.fs");
-	Shader fvsShader("5.1.framebuffers_screen.vs");
+	Shader ffsShader("screen.fs");
+	Shader fvsShader("screen.vs");
 	ShaderProgram fshaderProgram(fvsShader.code, ffsShader.code);
 	fshaderProgram.use();
 	fshaderProgram.setInt("screenTexture", 0);
@@ -210,10 +210,11 @@ int main()
 		// now bind back to default framebuffer and draw a quad plane with the attached framebuffer color texture
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		glDisable(GL_DEPTH_TEST); // disable depth test so screen-space quad isn't discarded due
-								  // clear all relevant buffers
-		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);; // set clear color to white (not really necessery actually, since we won't be able to see behind the quad anyways)
-		glClear(GL_COLOR_BUFFER_BIT);
+		
 		fshaderProgram.use();
+		// clear all relevant buffers
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // set clear color to white (not really necessery actually, since we won't be able to see behind the quad anyways)
+		glClear(GL_COLOR_BUFFER_BIT);
 		glBindVertexArray(quadVAO);
 		glBindTexture(GL_TEXTURE_2D, textureColorbuffer);	// use the color attachment texture as the texture of the quad plane
 		glDrawArrays(GL_TRIANGLES, 0, 6);
